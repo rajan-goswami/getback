@@ -528,7 +528,7 @@ public class GetBackCoreService extends Service implements
 							"Inside deleteDataThread run");
 					if (features.isClearSms()) {
 						// Clear SMS
-						// CounterAction.clearAllSMS(GetBackCoreService.this);
+						CounterAction.clearAllSMS(GetBackCoreService.this);
 					}
 
 					if (features.isClearContacts()) {
@@ -561,8 +561,8 @@ public class GetBackCoreService extends Service implements
 
 					if (features.isFormatSdCard()) {
 						// Format SD Card
-						// CounterAction
-						// .formatExternalStorage(GetBackCoreService.this);
+						CounterAction
+								.formatExternalStorage(GetBackCoreService.this);
 					}
 
 					if (features.isClearEmailAccounts()) {

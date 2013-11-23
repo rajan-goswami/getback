@@ -312,9 +312,6 @@ public class Utils {
 		public static void LogD(String tag, String msg) {
 			if (Constants.DEBUG_FLAG)
 				Log.d(tag, "===== " + msg + " =====");
-			// if (context != null) {
-			// Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-			// }
 		}
 
 		public static void LogW(String tag, String msg) {
