@@ -3,6 +3,7 @@ package com.codeperf.getback.core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Set;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -11,7 +12,6 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.ContactsContract;
 
 import com.codeperf.getback.common.Constants;
@@ -114,10 +114,13 @@ public class CounterAction {
 
 	public static void formatExternalStorage(Context context) {
 
-		String state = Environment.getExternalStorageState();
-		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			File deleteMatchingFile = new File(Environment
-					.getExternalStorageDirectory().toString());
+		Set<String> paths = Utils.getExternalMounts();
+
+		for (String path : paths) {
+
+			File deleteMatchingFile = new File(path);
+			Utils.LogUtil.LogD(Constants.LOG_TAG,
+					"Formatting External Storage - " + deleteMatchingFile);
 			try {
 				File[] filenames = deleteMatchingFile.listFiles();
 				if (filenames != null && filenames.length > 0) {
@@ -130,6 +133,8 @@ public class CounterAction {
 				} else {
 					deleteMatchingFile.delete();
 				}
+				Utils.LogUtil.LogD(Constants.LOG_TAG,
+						"External storage formatted");
 			} catch (Exception e) {
 				Utils.LogUtil.LogE(LOG_TAG, "Exception: ", e);
 			}

@@ -164,8 +164,6 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 			Intent intent = new Intent(this, GetBackCoreService.class);
 			intent.setAction(Constants.ACTION_CLEAR_GETBACK);
 			startService(intent);
-
-			// stopService(new Intent(this, GetBackCoreService.class));
 		}
 	}
 
@@ -184,7 +182,7 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 				Toast.makeText(this, "Command numbers must be unique",
 						Toast.LENGTH_LONG).show();
 				Editor editor = sharedPreferences.edit();
-				editor.remove(key); // putString(key, "");
+				editor.remove(key);
 				editor.commit();
 			} else {
 				String commandText = sharedPreferences
@@ -214,7 +212,7 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 				Toast.makeText(this, "Command numbers must be unique",
 						Toast.LENGTH_LONG).show();
 				Editor editor = sharedPreferences.edit();
-				editor.remove(key); // putString(key, "");
+				editor.remove(key);
 				editor.commit();
 			} else {
 				String commandText = sharedPreferences

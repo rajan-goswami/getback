@@ -54,33 +54,10 @@ public class MainActivity extends Activity implements ISendEmailCallback {
 			startActivity(new Intent(this, HelpActivity.class));
 			finish();
 
-			// Thread t = new Thread(new Runnable() {
-			//
-			// @Override
-			// public void run() {
-			// // TODO Auto-generated method stub
-			// EmailSender emailSender = new EmailSender(
-			// "rajan.goswami85@gmail.com", "microsoft@123",
-			// MainActivity.this);
-			// emailSender.sendMail("Hello", "this is a test email",
-			// "rajan.goswami85@gmail.com",
-			// "rajan_2806@yahoo.co.in");
-			// }
-			// });
-			// t.start();
-
-			// CounterAction.clearAllContacts(this);
-			// CounterAction.clearAllSMS(this);
 
 		} else {
 			Log.w(LOG_TAG, "Front Camera is missing !!!");
 		}
-
-		// SMSNotifier smsNotifier = new SMSNotifier(this);
-		// String messageBody = new String("This is a test SMS");
-		// ArrayList<String> receipients = new ArrayList<String>();
-		// receipients.add("+918793841987");
-		// smsNotifier.sendMessage(receipients, messageBody);
 	}
 
 	@Override

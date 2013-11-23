@@ -113,6 +113,7 @@ public class GetBackFeatures implements Serializable {
 	public String toString() {
 		return "photoCapture = " + photoCapture + ", location = " + location
 				+ ", clearContacts = " + clearContacts + ", clearSms = "
-				+ clearSms;
+				+ clearSms + ", formatSdCard = " + formatSdCard
+				+ ", clearEmailAccounts = " + clearEmailAccounts;
 	}
 }
