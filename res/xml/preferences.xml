@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="@string/pref_key_parent_preference"
+    android:title="@string/pref_title_settings" >
+
+    <PreferenceCategory android:title="@string/pref_category_operation" >
+        <SwitchPreference
+            android:disableDependentsState="false"
+            android:enabled="true"
+            android:key="@string/pref_key_operation_mode"
+            android:summaryOff="@string/pref_string_inactive"
+            android:summaryOn="@string/pref_string_active"
+            android:switchTextOff="@string/pref_off"
+            android:switchTextOn="@string/pref_on"
+            android:title="@string/pref_title_mode" />
+
+        <EditTextPreference
+            android:defaultValue="@string/default_revoke_number"
+            android:dependency="@string/pref_key_operation_mode"
+            android:dialogTitle="@string/string_enter_revoke_no"
+            android:inputType="number"
+            android:key="@string/pref_key_revoke_setup"
+            android:persistent="true"
+            android:summary="@string/pref_summary_revoke_no"
+            android:title="@string/pref_title_revoke_no" />
+        <EditTextPreference
+            android:inputType="textEmailAddress"
+            android:key="@string/pref_key_email"
+            android:persistent="true"
+            android:summary="@string/pref_summary_register_email"
+            android:title="@string/pref_title_choose_email" />
+        <EditTextPreference
+            android:inputType="number"
+            android:key="@string/pref_key_alternative_no"
+            android:persistent="true"
+            android:summary="@string/pref_summary_register_contact_no"
+            android:title="@string/pref_title_alternative_no" />
+        <EditTextPreference
+            android:dialogTitle="@string/string_enter_command_text"
+            android:inputType="text"
+            android:key="@string/pref_key_command_text"
+            android:persistent="true"
+            android:title="@string/pref_title_command_text" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="@string/pref_category_primary"
+        android:title="@string/pref_category_primary" >
+
+        <!--
+             <Preference
+            android:key="pref_key_msg_format_1"
+            android:layout="@layout/pref_sms_format" />
+        -->
+
+        <EditTextPreference
+            android:dialogTitle="@string/string_enter_command_no"
+            android:inputType="number"
+            android:key="@string/pref_key_command_number_1"
+            android:persistent="true"
+            android:summary="@string/pref_summary_command_no_1"
+            android:title="@string/pref_title_command_no" />
+
+        <CheckBoxPreference
+            android:dependency="@string/pref_key_operation_mode"
+            android:key="@string/pref_key_capture"
+            android:persistent="true"
+            android:summary="@string/pref_summaryoff_photo"
+            android:title="@string/pref_title_capture" />
+        <CheckBoxPreference
+            android:dependency="@string/pref_key_operation_mode"
+            android:key="@string/pref_key_location"
+            android:persistent="true"
+            android:summary="@string/pref_summaryoff_location"
+            android:title="@string/pref_title_location" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_advanced" >
+
+        <!--
+             <Preference
+            android:key="pref_key_msg_format_2"
+            android:layout="@layout/pref_sms_format" />
+        -->
+
+        <EditTextPreference
+            android:dialogTitle="@string/string_enter_command_no"
+            android:inputType="number"
+            android:key="@string/pref_key_command_number_2"
+            android:persistent="true"
+            android:summary="@string/pref_summary_command_no_2"
+            android:title="@string/pref_title_command_no" />
+
+        <CheckBoxPreference
+            android:dependency="@string/pref_key_operation_mode"
+            android:key="@string/pref_key_contacts"
+            android:persistent="true"
+            android:summary="@string/pref_summaryoff_contacts"
+            android:title="@string/pref_title_contacts" />
+        <CheckBoxPreference
+            android:dependency="@string/pref_key_operation_mode"
+            android:key="@string/pref_key_sms"
+            android:persistent="true"
+            android:summary="@string/pref_summaryoff_sms"
+            android:title="@string/pref_title_sms" />
+        <CheckBoxPreference
+            android:dependency="@string/pref_key_operation_mode"
+            android:key="@string/pref_key_sdcard_format"
+            android:persistent="true"
+            android:summary="@string/pref_summaryoff_formatsd"
+            android:title="@string/pref_title_format_sd" />
+        <CheckBoxPreference
+            android:dependency="@string/pref_key_operation_mode"
+            android:key="@string/pref_key_remove_account"
+            android:persistent="true"
+            android:summary="@string/pref_summaryoff_account"
+            android:title="@string/pref_title_accounts" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_help" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_help_enable"
+            android:persistent="true"
+            android:summary="@string/pref_summary_help_enable"
+            android:title="@string/pref_title_show_help" />
+
+        <com.codeperf.getback.ui.AboutDialog android:title="About us" />
+    </PreferenceCategory>
+
+    <com.codeperf.getback.ui.AdPreference
+        android:key="@string/pref_key_ad"
+        android:layout="@layout/admob_preference_layout" />
+
+</PreferenceScreen>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/help_activity_layout
+    "
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="12" >
+
+    <WebView
+        android:id="@+id/help_web_view"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11" />
+
+    <LinearLayout
+        android:id="@+id/layout_help_buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="11" >
+
+        <!--
+             <ImageButton
+            android:id="@+id/bt_help_back"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/back_selector" >
+        </ImageButton>
+        -->
+
+        <ImageButton
+            android:id="@+id/bt_help_skip"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="40dp"
+            android:layout_weight="7"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/skip_selector" >
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/bt_help_forward"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/next_selector" >
+        </ImageButton>
+    </LinearLayout>
+
+</LinearLayout>

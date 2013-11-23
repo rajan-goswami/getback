@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_1"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:text="GetBack assist you in Phone recovery if it is stolen. It acts as in-mobile Agent and provide protection against phone theft."
+        android:textSize="17sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="30dp"
+        android:text="Please provide your valuable feedback without hesitation. You can also report a bug or feature request if you need."
+        android:textSize="15sp"
+        android:textStyle="normal" />
+
+    <Button
+        android:id="@+id/bt_report_bug"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="Feedback"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:text="If you feel this application is useful please rate us on Marketplace. "
+        android:textSize="15sp"
+        android:textStyle="normal" />
+
+    <Button
+        android:id="@+id/bt_rate_getback"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="Rate GetBack"
+        android:textStyle="bold" />
+
+</LinearLayout>
