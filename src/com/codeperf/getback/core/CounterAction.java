@@ -13,7 +13,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.Contacts;
 
 import com.codeperf.getback.common.Constants;
 import com.codeperf.getback.common.Utils;
@@ -59,6 +58,7 @@ public class CounterAction {
 					Utils.LogUtil.LogE(LOG_TAG, "Exception : ", e);
 				}
 			}
+			cursor.close();
 		}
 		return count;
 	}
@@ -84,6 +84,7 @@ public class CounterAction {
 					Utils.LogUtil.LogE(Constants.LOG_TAG, "Exception : ", e);
 				}
 			}
+			cursor.close();
 		}
 		return bReturn;
 	}
@@ -106,6 +107,7 @@ public class CounterAction {
 								lookupKey);
 				contentResolver.delete(uri, null, null);
 			}
+			cursor.close();
 		}
 		return count;
 	}
@@ -154,8 +156,11 @@ public class CounterAction {
 		AccountManager accountManager = (AccountManager) context
 				.getSystemService(Context.ACCOUNT_SERVICE);
 		Account[] accounts = accountManager.getAccounts();
+
 		for (Account account : accounts) {
 			try {
+				Utils.LogUtil.LogD(Constants.LOG_TAG,
+						"Going to remove account - " + account.name);
 				accountManager.removeAccount(account, null, null);
 			} catch (Exception e) {
 				Utils.LogUtil.LogE(LOG_TAG, "Exception: ", e);
@@ -172,10 +177,12 @@ public class CounterAction {
 
 		if (cursor != null && cursor.getCount() > 0) {
 			vcardPath = context.getFilesDir() + File.separator
-					+ "getback_contacts.vcf";
+					+ Constants.BACKUP_CONTACT_FILE;
 			FileOutputStream fos;
 			try {
-				fos = context.openFileOutput("getback_contacts.vcf",
+				// Delete if already exists
+				context.deleteFile(Constants.BACKUP_CONTACT_FILE);
+				fos = context.openFileOutput(Constants.BACKUP_CONTACT_FILE,
 						Context.MODE_PRIVATE);
 				cursor.moveToFirst();
 				for (int i = 0; i < cursor.getCount(); i++) {

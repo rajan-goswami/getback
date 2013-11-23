@@ -30,7 +30,7 @@ public class SmsReceiver extends BroadcastReceiver {
 				String body = msg.getMessageBody();
 
 				// Check if it has a special body.
-				if (Utils.isTriggerSMS(context, body)) {
+				if (Utils.isTriggerCommandText(context, body)) {
 
 					Utils.LogUtil.LogD(Constants.LOG_TAG,
 							"Valid command text is received");
@@ -38,15 +38,21 @@ public class SmsReceiver extends BroadcastReceiver {
 					// Stop it being passed to the main Messaging inbox
 					this.abortBroadcast();
 
-					Bundle bundle = new Bundle();
-					bundle.putString(Constants.KEY_SENDER, origin);
-					bundle.putString(Constants.KEY_MESSAGE_BODY, body);
+					// Check if command number matches with one of configured
+					// commands for recovery actions
+					if (Utils.hasConfiguredCommandNo(context, body)) {
 
-					Intent serviceIntent = new Intent(
-							Constants.ACTION_SMS_RECEIVED);
-					serviceIntent.setClass(context, GetBackCoreService.class);
-					serviceIntent.putExtras(bundle);
-					context.startService(serviceIntent);
+						Bundle bundle = new Bundle();
+						bundle.putString(Constants.KEY_SENDER, origin);
+						bundle.putString(Constants.KEY_MESSAGE_BODY, body);
+
+						Intent serviceIntent = new Intent(
+								Constants.ACTION_SMS_RECEIVED);
+						serviceIntent.setClass(context,
+								GetBackCoreService.class);
+						serviceIntent.putExtras(bundle);
+						context.startService(serviceIntent);
+					}
 				}
 			}
 		}

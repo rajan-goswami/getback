@@ -91,25 +91,28 @@ public class EmailSender extends javax.mail.Authenticator {
 						new InternetAddress(receipients));
 			Transport.send(message);
 			bReturn = true;
-			callback.onEmailSent();
+			if (callback != null)
+				callback.onEmailSent();
 		} catch (Exception e) {
 			Utils.LogUtil.LogE(Constants.LOG_TAG, "Exception: ", e);
-			callback.onEmailError(-1);
+			if (callback != null)
+				callback.onEmailError(-1);
 		}
 		return bReturn;
 	}
 
-	public void addAttachment(String filename) {
+	public void addAttachment(String filePath) {
 		BodyPart messageBodyPart = new MimeBodyPart();
-		DataSource source = new FileDataSource(filename);
+		DataSource source = new FileDataSource(filePath);
 		try {
 			messageBodyPart.setDataHandler(new DataHandler(source));
-			messageBodyPart.setFileName(filename);
-
+			String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+			messageBodyPart.setFileName(fileName);
 			multipart.addBodyPart(messageBodyPart);
 		} catch (MessagingException e) {
 			Utils.LogUtil.LogE(Constants.LOG_TAG, "Exception: ", e);
-			callback.onEmailError(-1);
+			if (callback != null)
+				callback.onEmailError(-1);
 		}
 	}
 }

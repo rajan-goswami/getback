@@ -128,7 +128,8 @@ public class Utils {
 				.getDefaultSharedPreferences(context);
 		String revokeCode = sharedPref.getString(context.getResources()
 				.getString(R.string.pref_key_revoke_setup), "");
-		Utils.LogUtil.LogD(Constants.LOG_TAG, "Revocation code - " + revokeCode);
+		Utils.LogUtil
+				.LogD(Constants.LOG_TAG, "Revocation code - " + revokeCode);
 		return revokeCode;
 	}
 
@@ -172,20 +173,22 @@ public class Utils {
 				PackageManager.DONT_KILL_APP);
 	}
 
-	public static boolean isTriggerSMS(Context context, String messageBody) {
+	public static boolean isTriggerCommandText(Context context,
+			String messageBody) {
 		boolean bReturn = false;
 		if (messageBody != null && !messageBody.isEmpty()) {
 			String[] splits = messageBody.split(
 					Constants.SMS_COMMAND_DELIMETER, 2);
-			if (splits != null && splits.length == 2) {
+			if (splits != null && splits.length == 2 && splits[0] != null) {
 				SharedPreferences sharedPref = PreferenceManager
 						.getDefaultSharedPreferences(context);
 				String commandText = sharedPref.getString(
 						context.getResources().getString(
 								R.string.pref_key_command_text), "");
 				if (!commandText.isEmpty()) {
-					if (commandText.equals(splits[0]))
+					if (commandText.equals(splits[0])) {
 						bReturn = true;
+					}
 				}
 			}
 		}
@@ -193,6 +196,29 @@ public class Utils {
 		return bReturn;
 	}
 
+	public static boolean hasConfiguredCommandNo(Context context,
+			String messageBody) {
+		boolean bReturn = false;
+		if (messageBody != null && !messageBody.isEmpty()) {
+			String[] splits = messageBody.split(
+					Constants.SMS_COMMAND_DELIMETER, 2);
+			if (splits != null && splits.length == 2 && splits[1] != null) {
+				String[] configCommands = Utils.getConfiguredCommandNo(context);
+				if (configCommands[0].equals(splits[1])
+						|| configCommands[1].equals(splits[1]))
+					bReturn = true;
+			}
+		}
+
+		return bReturn;
+	}
+
+	/**
+	 * Return user configured command numbers. Starting from primary actions.
+	 * 
+	 * @param context
+	 * @return
+	 */
 	public static String[] getConfiguredCommandNo(Context context) {
 		String[] commandNos = new String[2];
 		SharedPreferences sharedPref = PreferenceManager
@@ -206,7 +232,25 @@ public class Utils {
 		return commandNos;
 	}
 
-	public static String parseCommandFromSms(String messageBody) {
+	public static boolean isPrimaryActionCommand(Context context,
+			String commandNo) {
+		boolean bReturn = false;
+		String[] commandNos = getConfiguredCommandNo(context);
+		if (commandNos[0] != null && commandNos[0].equals(commandNo))
+			bReturn = true;
+		return bReturn;
+	}
+
+	public static boolean isAdvancedActionCommand(Context context,
+			String commandNo) {
+		boolean bReturn = false;
+		String[] commandNos = getConfiguredCommandNo(context);
+		if (commandNos[1] != null && commandNos[1].equals(commandNo))
+			bReturn = true;
+		return bReturn;
+	}
+
+	public static String getCommandNoFromSms(String messageBody) {
 		if (messageBody != null && !messageBody.isEmpty()) {
 			String[] splits = messageBody.split(
 					Constants.SMS_COMMAND_DELIMETER, 2);

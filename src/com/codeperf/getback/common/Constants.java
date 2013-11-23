@@ -27,6 +27,7 @@ public class Constants {
 	public static final String DEFAULT_SENDER_EMAILADDRESS = "getback.codeperf@gmail.com";
 	public static final String DEFAULT_SENDER_PASSWORD = "microsoft@123";
 
+	public static final String BACKUP_CONTACT_FILE = "getback_contacts.vcf";
 	public static final String SMS_COMMAND_DELIMETER = "::";
 	public static final String LOG_TAG = "GetBack";
 	public static final boolean DEBUG_FLAG = true;

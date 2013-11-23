@@ -9,7 +9,7 @@ public class GetBackStateFlags {
 	public boolean isSmsSent = false;
 	public boolean isDataDeleted = false;
 	public boolean isScreenOn = true;
-	public boolean isTriggerSmsReceived = false;
+	public boolean isTriggerCommandReceived = false;
 	public boolean isNetworkAvailable = false;
 
 	public GetBackStateFlags() {
@@ -22,12 +22,13 @@ public class GetBackStateFlags {
 				+ isPhotoCaptured + ", isTheftTriggered = " + isTheftTriggered
 				+ ", isEmailSent = " + isEmailSent + ", isSmsSent = "
 				+ isSmsSent + ", isDataDeleted = " + isDataDeleted
-				+ ", isScreenOn = " + isScreenOn + ", isTriggerSmsReceived = "
-				+ isTriggerSmsReceived + ", isNetworkAvailable = "
+				+ ", isScreenOn = " + isScreenOn + ", isRcvdCommand_1 = "
+				+ isTriggerCommandReceived + ", isNetworkAvailable = "
 				+ isNetworkAvailable;
 	}
 
 	public void reset() {
-		isLocationFound = isPhotoCaptured = isTheftTriggered = isEmailSent = isSmsSent = isDataDeleted = isScreenOn = isTriggerSmsReceived = isNetworkAvailable = false;
+		isLocationFound = isPhotoCaptured = isTheftTriggered = isEmailSent = isSmsSent = isDataDeleted = isTriggerCommandReceived = isNetworkAvailable = false;
+		isScreenOn = true;
 	}
 }

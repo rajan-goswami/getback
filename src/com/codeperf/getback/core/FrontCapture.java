@@ -44,6 +44,8 @@ public class FrontCapture implements SurfaceHolder.Callback, PictureCallback,
 
 	private IFrontCaptureCallback callback;
 
+	private SurfaceView surfaceView = null;
+
 	public FrontCapture(Context ctx) {
 		context = ctx;
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -54,6 +56,10 @@ public class FrontCapture implements SurfaceHolder.Callback, PictureCallback,
 	@Override
 	public void onError(int error, Camera camera) {
 		Utils.LogUtil.LogE(Constants.LOG_TAG, "Camera Error : " + error, null);
+
+		WindowManager winMan = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+		winMan.removeView(surfaceView);
 		callback.onCaptureError(-1);
 	}
 
@@ -63,6 +69,10 @@ public class FrontCapture implements SurfaceHolder.Callback, PictureCallback,
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
 			audioMgr.setStreamMute(AudioManager.STREAM_SYSTEM, false);
 
+		WindowManager winMan = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+		winMan.removeView(surfaceView);
+
 		String photoPath = null;
 		if (storeOnSdCard)
 			photoPath = storePhotoOnSdcard(data);
@@ -70,6 +80,7 @@ public class FrontCapture implements SurfaceHolder.Callback, PictureCallback,
 			photoPath = storePhotoPrivate(data);
 
 		callback.onPhotoCaptured(photoPath);
+
 	}
 
 	@Override
@@ -198,18 +209,18 @@ public class FrontCapture implements SurfaceHolder.Callback, PictureCallback,
 		if (!Utils.isFrontCameraPresent(context))
 			callback.onCaptureError(-1);
 
-		SurfaceView surfaceview = new SurfaceView(context);
+		surfaceView = new SurfaceView(context);
 		WindowManager winMan = (WindowManager) context
 				.getSystemService(Context.WINDOW_SERVICE);
 		params = new WindowManager.LayoutParams(1, 1,
 				WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
 				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
 				PixelFormat.TRANSLUCENT);
-		winMan.addView(surfaceview, params);
+		winMan.addView(surfaceView, params);
 
-		surfaceview.setZOrderOnTop(true);
+		surfaceView.setZOrderOnTop(true);
 
-		SurfaceHolder holder = surfaceview.getHolder();
+		SurfaceHolder holder = surfaceView.getHolder();
 
 		holder.setFormat(PixelFormat.TRANSPARENT);
 

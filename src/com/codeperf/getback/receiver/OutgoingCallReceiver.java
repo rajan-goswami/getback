@@ -17,11 +17,6 @@ public class OutgoingCallReceiver extends BroadcastReceiver {
 		if (intent.getAction() != null && intent.getAction().equals(ACTION)) {
 
 			String phoneNumber = getResultData();
-			
-			// Fix : On some device, phone number contains some spaces inside,
-			// So Removing them before comparison 
- 			phoneNumber = phoneNumber.replace(" ", "");
-			
 			Utils.LogUtil.LogD(Constants.LOG_TAG, "getResultData : "
 					+ phoneNumber);
 			
@@ -32,7 +27,11 @@ public class OutgoingCallReceiver extends BroadcastReceiver {
 				Utils.LogUtil.LogD(Constants.LOG_TAG, "original number : "
 						+ phoneNumber);
 			}
-
+			
+			// Fix : On some device, phone number contains some spaces inside,
+			// So Removing them before comparison 
+ 			phoneNumber = phoneNumber.replace(" ", "");
+			
 			if (Utils.getRevocationCode(context).equals(phoneNumber)) {
 
 				// Revoke GetBack only if it is in active mode

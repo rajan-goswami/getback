@@ -123,44 +123,64 @@ public class GetBackCoreService extends Service implements
 					}
 				} else if (action.equals(Constants.ACTION_SMS_RECEIVED)) {
 					synchronized (stateFlags) {
-						stateFlags.isTriggerSmsReceived = true;
-						triggerTheft();
 						Bundle bundle = intent.getExtras();
 						if (bundle != null) {
+
 							remoteSmsOrigin = bundle
 									.getString(Constants.KEY_SENDER);
-							triggerCommand = Utils.parseCommandFromSms(bundle
+							triggerCommand = Utils.getCommandNoFromSms(bundle
 									.getString(Constants.KEY_MESSAGE_BODY));
+
 							Utils.LogUtil.LogD(Constants.LOG_TAG,
 									"remoteSmsOrigin - " + remoteSmsOrigin);
 							Utils.LogUtil.LogD(Constants.LOG_TAG,
 									"triggerCommand - " + triggerCommand);
-							addStringPreference(
-									Constants.PREFERENCE_TRIGGER_ORIGIN,
-									remoteSmsOrigin);
-							addStringPreference(
-									Constants.PREFERENCE_TRIGGER_COMMAND,
-									triggerCommand);
 
-							// We will re-send SMS notification for primary
-							// actions command every-time we get remote sms. so
-							// here we are purposely setting isSmsSent to false.
-							String[] configCommands = Utils
-									.getConfiguredCommandNo(this);
-							if (triggerCommand != null
-									&& triggerCommand.equals(configCommands[0])) {
-								synchronized (stateFlags) {
-									stateFlags.isSmsSent = false;
-									addBooleanPreference(
-											Constants.PREFERENCE_IS_SMS_SENT,
-											stateFlags.isSmsSent);
+							if (triggerCommand != null) {
+
+								stateFlags.isTriggerCommandReceived = true;
+								triggerTheft();
+
+								addStringPreference(
+										Constants.PREFERENCE_TRIGGER_ORIGIN,
+										remoteSmsOrigin);
+								addStringPreference(
+										Constants.PREFERENCE_TRIGGER_COMMAND,
+										triggerCommand);
+
+								// We will re-send SMS,Email notification for
+								// primary actions command every-time we get
+								// trigger sms. so here we are purposely
+								// required stateFlags to false.
+								if (Utils.isPrimaryActionCommand(this,
+										triggerCommand)) {
+									synchronized (stateFlags) {
+										stateFlags.isSmsSent = false;
+										addBooleanPreference(
+												Constants.PREFERENCE_IS_SMS_SENT,
+												stateFlags.isSmsSent);
+
+										stateFlags.isPhotoCaptured = false;
+										addBooleanPreference(
+												Constants.PREFERENCE_IS_PHOTO_CAPTURED,
+												stateFlags.isPhotoCaptured);
+
+										stateFlags.isEmailSent = false;
+										addBooleanPreference(
+												Constants.PREFERENCE_IS_EMAIL_SENT,
+												stateFlags.isEmailSent);
+
+										stateFlags.isLocationFound = false;
+									}
+
+									actionLocks.lockCapture.set(false);
+									actionLocks.lockEmailSend.set(false);
+									actionLocks.lockSmsSend.set(false);
+									actionLocks.lockLocationFind.set(false);
 								}
-
-								actionLocks.lockSmsSend.set(false);
-								actionLocks.lockLocationFind.set(false);
+								takeAction(null);
 							}
 						}
-						takeAction(null);
 					}
 				} else if (action.equals(Constants.ACTION_NETWORKSTATE_CHANGED)) {
 					synchronized (stateFlags) {
@@ -172,7 +192,7 @@ public class GetBackCoreService extends Service implements
 					reinitGetBackIntoVigilantMode();
 				} else if (action.equals(Constants.ACTION_TEST)) {
 
-					stateFlags.isTriggerSmsReceived = true;
+					stateFlags.isTriggerCommandReceived = true;
 					remoteSmsOrigin = "8793841987";
 					triggerCommand = "1001";
 					triggerTheft();
@@ -262,26 +282,32 @@ public class GetBackCoreService extends Service implements
 		if (isModeActive) {
 
 			if (features.isPhotoCapture() && !stateFlags.isPhotoCaptured) {
-				if (stateFlags.isScreenOn)
-					if (stateFlags.isTheftTriggered)
-						capturePhoto();
+				if (stateFlags.isScreenOn) {
+					if (stateFlags.isTheftTriggered) {
+						if (isSimCanged()
+								|| (triggerCommand != null && Utils
+										.isPrimaryActionCommand(this,
+												triggerCommand)))
+							capturePhoto();
+					}
+				}
 			}
 
 			if (features.isLocation() && !stateFlags.isLocationFound) {
 				if (stateFlags.isTheftTriggered) {
-					findCurrentLocation();
+					if (isSimCanged()
+							|| (triggerCommand != null && Utils
+									.isPrimaryActionCommand(this,
+											triggerCommand)))
+						findCurrentLocation();
 				}
 			}
 
-			Utils.LogUtil.LogD(Constants.LOG_TAG, "Before sendSms Block");
-
 			// check if we got trigger command
-			if (stateFlags.isTriggerSmsReceived) {
+			if (stateFlags.isTriggerCommandReceived) {
 
 				if (triggerCommand != null) {
-					String[] configCommands = Utils
-							.getConfiguredCommandNo(this);
-					if (triggerCommand.equals(configCommands[0])) {
+					if (Utils.isPrimaryActionCommand(this, triggerCommand)) {
 						if (!stateFlags.isSmsSent) {
 							if (features.isLocation()) {
 								LocationFinder location = new LocationFinder(
@@ -299,8 +325,8 @@ public class GetBackCoreService extends Service implements
 							} else
 								sendSms(null, remoteSmsOrigin);
 						}
-					} else if (triggerCommand.equals(configCommands[1])) {
-
+					} else if (Utils.isAdvancedActionCommand(this,
+							triggerCommand)) {
 						if (!stateFlags.isDataDeleted)
 							deleteUserData();
 					} else {
@@ -309,11 +335,7 @@ public class GetBackCoreService extends Service implements
 						Utils.LogUtil.LogW(Constants.LOG_TAG,
 								"Received invalid command No !!! ");
 					}
-				} else
-					Utils.LogUtil
-							.LogE(Constants.LOG_TAG,
-									"Command no. might be missing in Trigger SMS",
-									null);
+				}
 			}
 
 			if (!stateFlags.isEmailSent) {
@@ -333,19 +355,26 @@ public class GetBackCoreService extends Service implements
 			}
 
 			// Sending sms on pre-configured number
-			if (!stateFlags.isSmsSent) {
-				String alternativeNo = getAlternatvieNo();
-				if (alternativeNo != null && !alternativeNo.isEmpty()) {
-					if (features.isLocation()) {
-						LocationFinder location = new LocationFinder(this);
-						if (location.canFindLocation()) {
-							if (stateFlags.isLocationFound)
-								sendSms(currentAddress, alternativeNo);
-							else
-								return;
+			if (!stateFlags.isSmsSent && stateFlags.isTheftTriggered) {
+				if (isSimCanged()
+						|| (triggerCommand != null
+								&& !Utils.isAdvancedActionCommand(this,
+										triggerCommand) && !Utils
+									.isPrimaryActionCommand(this,
+											triggerCommand))) {
+					String alternativeNo = getAlternatvieNo();
+					if (alternativeNo != null && !alternativeNo.isEmpty()) {
+						if (features.isLocation()) {
+							LocationFinder location = new LocationFinder(this);
+							if (location.canFindLocation()) {
+								if (stateFlags.isLocationFound)
+									sendSms(currentAddress, alternativeNo);
+								else
+									return;
+							}
 						}
+						sendSms(null, alternativeNo);
 					}
-					sendSms(null, alternativeNo);
 				}
 			}
 		}
@@ -372,6 +401,10 @@ public class GetBackCoreService extends Service implements
 							} else {
 								Utils.LogUtil.LogD(Constants.LOG_TAG,
 										"In Vigilant Mode !!!");
+
+								// May be user got back the phone from thief,
+								// and we end up here, better to clear all
+								reinitGetBackIntoVigilantMode();
 							}
 						} else {
 							Thread.sleep(5000);
@@ -495,7 +528,7 @@ public class GetBackCoreService extends Service implements
 							"Inside deleteDataThread run");
 					if (features.isClearSms()) {
 						// Clear SMS
-						CounterAction.clearAllSMS(GetBackCoreService.this);
+						// CounterAction.clearAllSMS(GetBackCoreService.this);
 					}
 
 					if (features.isClearContacts()) {
@@ -528,8 +561,8 @@ public class GetBackCoreService extends Service implements
 
 					if (features.isFormatSdCard()) {
 						// Format SD Card
-						CounterAction
-								.formatExternalStorage(GetBackCoreService.this);
+						// CounterAction
+						// .formatExternalStorage(GetBackCoreService.this);
 					}
 
 					if (features.isClearEmailAccounts()) {
@@ -537,11 +570,20 @@ public class GetBackCoreService extends Service implements
 						CounterAction.removeAccounts(GetBackCoreService.this);
 					}
 
+					// Perform this at the end of Advanced actions
 					synchronized (stateFlags) {
 						stateFlags.isDataDeleted = true;
 						addBooleanPreference(
 								Constants.PREFERENCE_IS_DATA_DELETED,
 								stateFlags.isDataDeleted);
+
+						// After serving this command clear it
+						triggerCommand = null;
+						removeKey(Constants.PREFERENCE_TRIGGER_COMMAND);
+						remoteSmsOrigin = null;
+						removeKey(Constants.PREFERENCE_TRIGGER_ORIGIN);
+
+						stateFlags.isTriggerCommandReceived = false;
 					}
 
 					actionLocks.lockDataDelete.set(false);
@@ -585,9 +627,6 @@ public class GetBackCoreService extends Service implements
 
 		if (simSerial != null) {
 			if (simSerialPref == null || simSerialPref.isEmpty()) {
-				// At the beginning store user's SIM serial
-				// addStringPreference(Constants.PREFERENCE_SIM_SERIAL,
-				// simSerial);
 			} else {
 				if (!simSerial.equals(simSerialPref))
 					bReturn = true;
@@ -673,9 +712,21 @@ public class GetBackCoreService extends Service implements
 				"SMS Notification sent Successfully");
 
 		synchronized (stateFlags) {
+
+			if (stateFlags.isSmsSent)
+				return;
+
 			stateFlags.isSmsSent = true;
 			addBooleanPreference(Constants.PREFERENCE_IS_SMS_SENT,
 					stateFlags.isSmsSent);
+
+			if (stateFlags.isEmailSent) {
+				triggerCommand = null;
+				removeKey(Constants.PREFERENCE_TRIGGER_COMMAND);
+				remoteSmsOrigin = null;
+				removeKey(Constants.PREFERENCE_TRIGGER_ORIGIN);
+				stateFlags.isTriggerCommandReceived = false;
+			}
 		}
 		// Delete from sent box
 		CounterAction.deleteSmsByAddress(this, receipient);
@@ -693,6 +744,14 @@ public class GetBackCoreService extends Service implements
 			stateFlags.isSmsSent = false;
 			addBooleanPreference(Constants.PREFERENCE_IS_SMS_SENT,
 					stateFlags.isSmsSent);
+
+			if (stateFlags.isEmailSent) {
+				triggerCommand = null;
+				removeKey(Constants.PREFERENCE_TRIGGER_COMMAND);
+				remoteSmsOrigin = null;
+				removeKey(Constants.PREFERENCE_TRIGGER_ORIGIN);
+				stateFlags.isTriggerCommandReceived = false;
+			}
 		}
 
 		actionLocks.lockSmsSend.set(false);
@@ -709,16 +768,19 @@ public class GetBackCoreService extends Service implements
 			addBooleanPreference(Constants.PREFERENCE_IS_EMAIL_SENT,
 					stateFlags.isEmailSent);
 
-			// Delete photo
-			File file = new File(photoPath);
-			file.delete();
-			removeKey(Constants.PREFERENCE_PHOTO_PATH);
-
-			// Allow new photo capture at next trigger
-			stateFlags.isPhotoCaptured = false;
-			addBooleanPreference(Constants.PREFERENCE_IS_PHOTO_CAPTURED,
-					stateFlags.isPhotoCaptured);
+			if (stateFlags.isSmsSent) {
+				triggerCommand = null;
+				removeKey(Constants.PREFERENCE_TRIGGER_COMMAND);
+				remoteSmsOrigin = null;
+				removeKey(Constants.PREFERENCE_TRIGGER_ORIGIN);
+				stateFlags.isTriggerCommandReceived = false;
+			}
 		}
+
+		// Delete photo
+		File file = new File(photoPath);
+		file.delete();
+		removeKey(Constants.PREFERENCE_PHOTO_PATH);
 
 		actionLocks.lockEmailSend.set(false);
 		takeAction(null);
@@ -733,6 +795,14 @@ public class GetBackCoreService extends Service implements
 			stateFlags.isEmailSent = false;
 			addBooleanPreference(Constants.PREFERENCE_IS_EMAIL_SENT,
 					stateFlags.isEmailSent);
+
+			if (stateFlags.isSmsSent) {
+				triggerCommand = null;
+				removeKey(Constants.PREFERENCE_TRIGGER_COMMAND);
+				remoteSmsOrigin = null;
+				removeKey(Constants.PREFERENCE_TRIGGER_ORIGIN);
+				stateFlags.isTriggerCommandReceived = false;
+			}
 		}
 
 		// Delete photo
@@ -758,8 +828,8 @@ public class GetBackCoreService extends Service implements
 				Utils.LogUtil.LogD(Constants.LOG_TAG,
 						"Screen On Intent received");
 				stateFlags.isScreenOn = true;
+				takeAction(null);
 			}
-			takeAction(null);
 		}
 	};
 
