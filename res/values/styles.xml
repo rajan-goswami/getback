@@ -19,7 +19,7 @@
 
     <style name="full_screen_dialog" parent="android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
-        <item name="android:windowBackground">@drawable/background_1</item>
+        <item name="android:windowBackground">@android:drawable/dialog_holo_dark_frame</item>
         <item name="android:windowFullscreen">true</item>
         <!--
     <item name="android:windowIsFloating">false</item>
@@ -28,5 +28,16 @@
     <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         -->
     </style>
+
+    <style name="settings_theme" parent="@android:style/Theme.Holo">
+        <!-- <item name="android:windowBackground">@drawable/background_1</item> -->
+        <!-- <item name="android:windowBackground">@android:color/background_dark</item> -->
+        <!-- <item name="android:windowBackground">@android:drawable/dialog_holo_dark_frame</item> -->
+        <!-- <item name="android:textColor">#0A3E8C</item> -->
+    </style>
+
+    <!-- <style name="generalnotitle" parent="@android:style/Theme.Holo.Light">
+        <item name="android:windowNoTitle">true</item>
+    </style> -->
 
 </resources>

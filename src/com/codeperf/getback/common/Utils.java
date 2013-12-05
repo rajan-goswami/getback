@@ -31,7 +31,6 @@ import com.codeperf.getback.R;
 
 public class Utils {
 
-	// private static Context context = null;
 	private static final char[] SEKRIT = { 'Q', 'W', 'E', 'R', 'T', '$', '%',
 			'^', '&', '2', '3', '5', '6' };
 

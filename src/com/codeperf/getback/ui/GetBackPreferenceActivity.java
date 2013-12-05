@@ -149,6 +149,8 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 
 	@Override
 	protected void onDestroy() {
+		resources = null;
+		sharedPref = null;
 		super.onDestroy();
 	}
 
@@ -170,6 +172,7 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 	@SuppressWarnings("deprecation")
 	private void onChangedCommandNo1(SharedPreferences sharedPreferences,
 			String key) {
+
 		String value = sharedPreferences.getString(key, "");
 		Preference commandPref = (Preference) findPreference(key);
 		if (!value.isEmpty()) {
@@ -200,6 +203,7 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 	@SuppressWarnings("deprecation")
 	private void onChangedCommandNo2(SharedPreferences sharedPreferences,
 			String key) {
+
 		String value = sharedPreferences.getString(key, "");
 		Preference commandPref = (Preference) findPreference(key);
 		if (!value.isEmpty()) {
@@ -230,6 +234,7 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 	@SuppressWarnings("deprecation")
 	private void onChangedCommandText(SharedPreferences sharedPreferences,
 			String key) {
+
 		changePreferenceSummary(R.string.pref_key_command_text,
 				R.string.pref_summary_command_text);
 		String value = sharedPreferences.getString(key, "");
@@ -261,6 +266,7 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 	@SuppressWarnings("deprecation")
 	private void onChangedRevokeSetup(SharedPreferences sharedPreferences,
 			String key) {
+
 		String value = sharedPreferences.getString(key, "");
 		if (value.isEmpty()) {
 			value = resources.getString(R.string.default_revoke_number);
@@ -277,6 +283,7 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 
 	@SuppressWarnings("deprecation")
 	private void changePreferenceSummary(int key, int summaryId) {
+
 		String value = sharedPref.getString(resources.getString(key), "");
 		Preference pref = findPreference(resources.getString(key));
 		if (value.isEmpty()) {
@@ -288,6 +295,7 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 
 	@SuppressWarnings("deprecation")
 	private void changeCommandNoPrefState(boolean state) {
+
 		Preference commandPref = (Preference) findPreference(resources
 				.getString(R.string.pref_key_command_number_1));
 		commandPref.setEnabled(state);

@@ -42,9 +42,7 @@
             android:persistent="true"
             android:title="@string/pref_title_command_text" />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:key="@string/pref_category_primary"
-        android:title="@string/pref_category_primary" >
+    <PreferenceCategory android:title="@string/pref_category_primary" >
 
         <!--
              <Preference
@@ -125,8 +123,10 @@
         <com.codeperf.getback.ui.AboutDialog android:title="About us" />
     </PreferenceCategory>
 
-    <com.codeperf.getback.ui.AdPreference
+    <!--
+         <com.codeperf.getback.ui.AdPreference
         android:key="@string/pref_key_ad"
         android:layout="@layout/admob_preference_layout" />
+    -->
 
 </PreferenceScreen>

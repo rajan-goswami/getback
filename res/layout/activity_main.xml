@@ -6,9 +6,9 @@
     tools:context=".MainActivity"
     tools:ignore="MergeRootFrame" >
 
-    <SurfaceView
+    <!-- <SurfaceView
         android:id="@+id/dummy_surface"
         android:layout_width="1dp"
-        android:layout_height="1dp" />
+        android:layout_height="1dp" /> -->
 
 </FrameLayout>

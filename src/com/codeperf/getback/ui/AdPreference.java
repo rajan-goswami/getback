@@ -44,7 +44,8 @@ public class AdPreference extends Preference {
 
 		LayoutInflater inflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		return inflater.inflate(R.layout.admob_preference_layout, null);
+		View view = inflater.inflate(R.layout.admob_preference_layout, null);
+		return view;
 	}
 
 }

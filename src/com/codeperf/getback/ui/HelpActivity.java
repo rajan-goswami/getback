@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
@@ -23,6 +24,8 @@ public class HelpActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		if (Utils.isHelpEnableAtStartup(this)) {
+
+			this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 			setContentView(R.layout.help_activity);
 
@@ -97,6 +100,7 @@ public class HelpActivity extends Activity {
 			webView.removeAllViews();
 			webView.clearHistory();
 			webView.destroy();
+			webView = null;
 		}
 
 	}

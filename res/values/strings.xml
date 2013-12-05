@@ -27,7 +27,7 @@
     <string name="pref_summaryoff_account">Check to delete accounts on theft</string>
     <string name="pref_summary_revoke_no">To launch GetBack when it is hidden, dial - </string>
     <string name="pref_summary_register_email">Register your email for GetBack notification</string>
-    <string name="pref_summary_register_contact_no">Register alternative contact no for GetBack notification</string>
+    <string name="pref_summary_register_contact_no">Register alternate contact no for GetBack notification</string>
     <string name="pref_summary_command_text">Configure a unique command text</string>
     <string name="pref_summary_command_no_1">Configure a unique command number for primary actions</string>
     <string name="pref_summary_command_no_2">Configure a unique command number for advanced actions</string>
@@ -36,7 +36,7 @@
     <string name="pref_on">On</string>
     <string name="pref_off">Off</string>
     <string name="pref_title_choose_email">Email</string>
-    <string name="pref_title_alternative_no">Alternative Number</string>
+    <string name="pref_title_alternative_no">Alternate Number</string>
     <string name="pref_title_revoke_no">Revoke Setup</string>
     <string name="pref_title_command_text">Command Text</string>
     <string name="pref_title_command_no">Command Number</string>
@@ -73,5 +73,11 @@
     <string name="tv_choose_command_help">Command Format will be - Text::Number</string>
     <string name="toast_setup_revoke">GetBack is hidden now. Please remember revoke number to launch it</string>
     <string name="default_revoke_number">123456789</string>
+    <string name="app_version">1.3</string>
+    <string name="about_heading">GetBack assist you in Phone recovery if it is stolen. It acts as in-mobile Agent and provide protection against phone theft.</string>
+    <string name="about_feedback_heading">Please provide your valuable feedback without hesitation. You can also report a bug or feature request if you need.</string>
+    <string name="about_rating_heading">If you feel this application is useful please rate us on Marketplace. </string>
+    <string name="bt_text_feedback">Feedback</string>
+    <string name="bt_rate_getback">Rate GetBack</string>
 
 </resources>
