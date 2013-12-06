@@ -48,13 +48,13 @@ public class GetBackPreferenceActivity extends PreferenceActivity implements
 			// mCategory.removePreference(capturePref);
 		}
 
-		if (!Utils.getConnectivityStatus(this)) {
-			PreferenceScreen mainPrefScreen = (PreferenceScreen) findPreference(resources
-					.getString(R.string.pref_key_parent_preference));
-			Preference adPref = (Preference) findPreference(resources
-					.getString(R.string.pref_key_ad));
-			mainPrefScreen.removePreference(adPref);
-		}
+//		if (!Utils.getConnectivityStatus(this)) {
+//			PreferenceScreen mainPrefScreen = (PreferenceScreen) findPreference(resources
+//					.getString(R.string.pref_key_parent_preference));
+//			Preference adPref = (Preference) findPreference(resources
+//					.getString(R.string.pref_key_ad));
+//			mainPrefScreen.removePreference(adPref);
+//		}
 
 		changePreferenceSummary(R.string.pref_key_email,
 				R.string.pref_summary_register_email);

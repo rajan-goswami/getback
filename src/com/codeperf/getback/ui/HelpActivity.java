@@ -36,8 +36,9 @@ public class HelpActivity extends Activity {
 			// WebSettings webSettings = webView.getSettings();
 			// webSettings.setBuiltInZoomControls(true);
 
-			webView.setWebViewClient(new Callback()); // HERE IS THE MAIN CHANGE
+			webView.setWebViewClient(new Callback());
 			webView.loadUrl("file:///android_asset/help_1.html");
+			webView.setWillNotCacheDrawing(true);
 
 			ImageButton skipBt = (ImageButton) findViewById(R.id.bt_help_skip);
 			skipBt.setOnClickListener(new OnClickListener() {
@@ -82,6 +83,12 @@ public class HelpActivity extends Activity {
 					}
 				}
 			});
+
+			// Hide add space if no network
+//			if (!Utils.getConnectivityStatus(this)) {
+//				View adView = findViewById(R.id.ad);
+//				adView.setVisibility(View.GONE);
+//			}
 		} else {
 			startActivity(new Intent(HelpActivity.this,
 					GetBackPreferenceActivity.class));
