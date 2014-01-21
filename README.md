@@ -19,8 +19,3 @@ This is an anti-theft application. It's aim is to give user at least a chance to
 1. Must configure a Revoke number before changing GetBack to active mode.
 2. Must configure Command text and Command number for remote triggering.
 3. SMS format for remote trigger - Command Text::Command Number
-
-You can report about issues/feedback via in-app Feedback from About screen.
-Alternatively you can reach us on codeperf.s@gmail.com
-
-Credit for application icon goes to http://hbielen.deviantart.com/ .... Thank you for help...
