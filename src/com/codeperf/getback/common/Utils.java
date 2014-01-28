@@ -157,7 +157,7 @@ public class Utils {
 	}
 
 	public static void hideApplication(Context context) {
-		Log.d("GetBack", "Inside hideApplication");
+		Utils.LogUtil.LogD(Constants.LOG_TAG, "Inside hideApplication");
 		ComponentName componentToDisabled = new ComponentName(
 				"com.codeperf.getback", "com.codeperf.getback.ui.MainActivity");
 		PackageManager pm = context.getPackageManager();
@@ -167,7 +167,7 @@ public class Utils {
 	}
 
 	public static void unhideApplication(Context context) {
-		Log.d("GetBack", "Inside unhideApplication");
+		Utils.LogUtil.LogD(Constants.LOG_TAG, "Inside unhideApplication");
 		ComponentName componentToEnabled = new ComponentName(
 				"com.codeperf.getback", "com.codeperf.getback.ui.MainActivity");
 		PackageManager pm = context.getApplicationContext().getPackageManager();
